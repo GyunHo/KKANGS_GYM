@@ -31,7 +31,7 @@ class _LeagueDetailState extends State<LeagueDetail> {
         centerTitle: true,
         title: SingleChildScrollView(
           child: Text(
-            "${leagueController.selectedLeague['name']} 리그 기록",
+            "${leagueController.selectedLeague['name']}",
             style: textTheme.titleLarge!.copyWith(
                 color: colorScheme.onBackground, fontWeight: FontWeight.bold),
           ),
