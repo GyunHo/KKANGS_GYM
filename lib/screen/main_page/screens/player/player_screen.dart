@@ -37,7 +37,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         const SizedBox(
           height: 8,
         ),
-        authController.isLogin() ?? false
+        authController.isLogin()
             ? Row(
                 children: [
                   Expanded(
@@ -140,15 +140,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             await teamAndPlayerController
                                 .getTeamCrew(teamDoc)
                                 .then((QuerySnapshot queryData) async {
-                              await Get.to(() => TeamDetail(
-                                  teamDoc: teamDoc,
-                                  players: queryData.docs))?.then((value) {
-                                setState(() {});
-                              });
+                              Get.to(() => TeamDetail(
+                                  teamDoc: teamDoc, players: queryData.docs));
                             });
                           },
                           onLongPress: () {
-                            if (authController.isLogin() ?? false) {
+                            if (authController.isLogin()) {
                               Get.dialog(AlertDialog(
                                 content: Text('정말 삭제 하시겠습니까',
                                     style: TextStyle(color: Colors.white)),
