@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1002372398712",
+    "project_id": "ggangs-gym",
+    "storage_bucket": "ggangs-gym.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002372398712:android:39878e71f352eda622778d",
+        "android_client_info": {
+          "package_name": "com.example.ggangs_gym"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxVqKxrdNWsUYJCYb7dm50JYUKTR_UWMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
