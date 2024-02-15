@@ -172,14 +172,17 @@ class RecordController extends GetxController {
     WriteBatch writeBatch = FirebaseFirestore.instance.batch();
     DocumentReference gameDocRecord = snapshot.reference;
     DocumentReference recordDocRecord = recordInstance.doc(gameDocRecord.id);
-    DocumentReference playerDocRecord = FirebaseFirestore.instance
-        .collection('player')
-        .doc(record.playerId)
-        .collection('record')
-        .doc(gameDocRecord.id);
+    if (record.playerId.isNotEmpty) {
+      DocumentReference playerDocRecord = FirebaseFirestore.instance
+          .collection('player')
+          .doc(record.playerId)
+          .collection('record')
+          .doc(gameDocRecord.id);
+      writeBatch.delete(playerDocRecord);
+    }
+
     writeBatch.delete(gameDocRecord);
     writeBatch.delete(recordDocRecord);
-    writeBatch.delete(playerDocRecord);
     await writeBatch.commit().then((value) => print('기록 삭제 완료'));
   }
 
