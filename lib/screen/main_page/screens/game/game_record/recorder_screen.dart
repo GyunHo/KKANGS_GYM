@@ -5,8 +5,8 @@ import 'package:focused_menu/modals.dart';
 import 'package:get/get.dart';
 import 'package:ggangs_gym/get_controllers/record_controller.dart';
 import 'package:ggangs_gym/models/record_model.dart';
-import 'package:ggangs_gym/screen/main_page/main_page.dart';
 import 'package:flutter/services.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 
 class RecorderScreen extends StatefulWidget {
   const RecorderScreen({super.key});
@@ -252,7 +252,6 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Flexible(
-
                                         child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
@@ -300,48 +299,45 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                             }).toList()),
                                       ),
                                       Flexible(
-
                                           child: Text(
-                                            '$homePoint : $awayPoint',
-                                            style: const TextStyle(
-                                              fontSize: 36,
-                                              color: Colors.white,
-                                            ),
-                                          )),
+                                        '$homePoint : $awayPoint',
+                                        style: const TextStyle(
+                                          fontSize: 36,
+                                          color: Colors.white,
+                                        ),
+                                      )),
                                       Flexible(
-
                                           child: Column(
+                                        children: [
+                                          Text(
+                                            '${recordController?.quarterToString()} 팀 파울',
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.redAccent),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
                                             children: [
+                                              ///홈팀파울
                                               Text(
-                                                '${recordController?.quarterToString()} 팀 파울',
+                                                '${homeFoul[recordController?.quarterToString()] ?? 0}',
                                                 style: const TextStyle(
                                                     fontSize: 20,
-                                                    color: Colors.redAccent),
+                                                    color: Colors.white),
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  ///홈팀파울
-                                                  Text(
-                                                    '${homeFoul[recordController?.quarterToString()] ?? 0}',
-                                                    style: const TextStyle(
-                                                        fontSize:20,
-                                                        color: Colors.white),
-                                                  ),
 
-                                                  ///어웨이팀 파울
-                                                  Text(
-                                                    '${awayFoul[recordController?.quarterToString()] ?? 0}',
-                                                    style: const TextStyle(
-                                                        fontSize: 20,
-                                                        color: Colors.white),
-                                                  )
-                                                ],
+                                              ///어웨이팀 파울
+                                              Text(
+                                                '${awayFoul[recordController?.quarterToString()] ?? 0}',
+                                                style: const TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.white),
                                               )
                                             ],
-                                          )),
+                                          )
+                                        ],
+                                      )),
                                     ],
                                   ),
                                 ),
@@ -622,7 +618,11 @@ class _RecorderScreenState extends State<RecorderScreen> {
                   Flexible(
                       child: IconButton(
                           iconSize: 12,
-                          onPressed: () {
+                          onPressed: () async {
+                            final canVibrate = await Haptics.canVibrate();
+                            if (canVibrate) {
+                              await Haptics.vibrate(HapticsType.medium);
+                            }
                             recordController?.deleteRecord(records[count]);
                           },
                           icon: const Icon(

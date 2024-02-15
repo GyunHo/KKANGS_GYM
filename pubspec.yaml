@@ -50,6 +50,7 @@ dependencies:
   widget_screenshot: ^0.0.9
   image_gallery_saver: ^2.0.3
   marquee: ^2.2.3
+  haptic_feedback: ^0.4.2
 
 
 
