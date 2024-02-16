@@ -125,7 +125,7 @@ class RecordController extends GetxController {
     //       .where('gameId', isEqualTo: gameId)
     //       .orderBy('time', descending: true)
     //       .snapshots();
-    return gameDoc.collection('record').snapshots();
+    return gameDoc.collection('record').orderBy('time',descending: true).snapshots();
   }
 
   ///점수, 파울 등 기록
