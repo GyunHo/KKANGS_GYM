@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,8 +10,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'get_controllers/auth_controller.dart';
 
 void main() async {
+  bool needsWeb = Platform.isLinux | Platform.isWindows;
+
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+  await Firebase.initializeApp(options: needsWeb
+      ? DefaultFirebaseOptions.web
+      : DefaultFirebaseOptions.currentPlatform)
       .then((value) => Get.put(AuthController()));
 
   runApp(const KkangsGym());
