@@ -7,6 +7,7 @@ import 'package:ggangs_gym/get_controllers/record_controller.dart';
 import 'package:ggangs_gym/models/record_model.dart';
 import 'package:flutter/services.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
+import 'dart:io' show Platform;
 
 class RecorderScreen extends StatefulWidget {
   const RecorderScreen({super.key});
@@ -619,10 +620,15 @@ class _RecorderScreenState extends State<RecorderScreen> {
                       child: IconButton(
                           iconSize: 12,
                           onPressed: () async {
-                            final canVibrate = await Haptics.canVibrate();
-                            if (canVibrate) {
-                              await Haptics.vibrate(HapticsType.medium);
+                            String os = Platform.operatingSystem;
+                            if (os == 'android' || os == 'ios') {
+                              final canVibrate = await Haptics.canVibrate();
+
+                              if (canVibrate) {
+                                await Haptics.vibrate(HapticsType.medium);
+                              }
                             }
+
                             recordController?.deleteRecord(records[count]);
                           },
                           icon: const Icon(
