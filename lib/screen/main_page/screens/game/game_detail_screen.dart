@@ -118,7 +118,7 @@ class _GameDetailState extends State<GameDetail> {
 
         ///선수 총합 로우 추가
         List<Widget> playerTotalRow = [
-          _buildCell('${player['playerName']}', cellWidth, totalRowHeight,
+          _buildCell('${player['playerName']} / ${player['uniformNumber']}', cellWidth, totalRowHeight,
               Colors.white.withOpacity(0.8))
         ];
 
