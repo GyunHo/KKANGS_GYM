@@ -46,6 +46,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int crossCount = MediaQuery.of(context).size.height~/120-1;
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -122,8 +123,9 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                   physics: BouncingScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 5),
+                                          crossAxisCount: crossCount),
                                   itemBuilder: (ctx, count) {
+
                                     if (recordController!
                                                 .homeTeamPlayer.length +
                                             1 ==
@@ -393,7 +395,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                   physics: BouncingScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 5),
+                                          crossAxisCount: crossCount),
                                   itemBuilder: (ctx, count) {
                                     if (recordController!
                                                 .awayTeamPlayer.length +
@@ -714,7 +716,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
             Flexible(
               flex: 2,
               child: AutoSizeText(
-                '파울:${fouls.length},득점:',
+                '파울:${fouls.length}, 10점:',
                 style: TextStyle(
                     overflow: TextOverflow.ellipsis,
                     fontSize: 20,
