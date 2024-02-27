@@ -46,7 +46,9 @@ class _RecorderScreenState extends State<RecorderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int crossCount = MediaQuery.of(context).size.height~/120-1;
+    Size size = MediaQuery.of(context).size;
+
+    int crossCount = size.width ~/ (size.height * 0.09);
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -125,7 +127,6 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: crossCount),
                                   itemBuilder: (ctx, count) {
-
                                     if (recordController!
                                                 .homeTeamPlayer.length +
                                             1 ==
@@ -699,7 +700,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Flexible(
-              flex:4,
+              flex: 4,
               child: AutoSizeText(
                 player['uniformNumber'],
                 style: const TextStyle(fontSize: 50),
