@@ -8,6 +8,7 @@ import 'package:ggangs_gym/models/record_model.dart';
 import 'package:flutter/services.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
 import 'dart:io' show Platform;
+import 'package:auto_size_text/auto_size_text.dart';
 
 class RecorderScreen extends StatefulWidget {
   const RecorderScreen({super.key});
@@ -56,28 +57,6 @@ class _RecorderScreenState extends State<RecorderScreen> {
               await recordController!.addScoreToGame().then((value) {
                 Get.back(result: true);
               });
-              // showDialog(
-              //     context: context,
-              //     builder: (context) {
-              //       return AlertDialog(
-              //         actions: [
-              //           ElevatedButton(
-              //               onPressed: () {
-              //                 Get.back();
-              //               },
-              //               child: const Text('취소')),
-              //           ElevatedButton(
-              //               onPressed: () {
-              //                 Get.offAll(() => const MainPage());
-              //               },
-              //               child: const Text('확인'))
-              //         ],
-              //         content: const Text(
-              //           '저장 하지 않고 나갑니다',
-              //           style: TextStyle(color: Colors.white),
-              //         ),
-              //       );
-              //     });
             },
           ),
           actions: [
@@ -506,7 +485,9 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                 children: [
                                   Text(
                                     '이름 : ${player['playerName']}',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
                                   ),
                                   Text(
                                     '번호: ${player['uniformNumber']}',
@@ -709,18 +690,36 @@ class _RecorderScreenState extends State<RecorderScreen> {
             }),
       ],
       onPressed: () {},
-      child: Card(
+      child: Container(
+        margin: EdgeInsets.all(2),
         color: Colors.white.withOpacity(0.8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(player['uniformNumber']),
-            Text(player['playerName']),
-            Text(
-              '파울:${fouls.length}',
-              style: TextStyle(
-                  fontSize: 12,
-                  color: fouls.length > 4 ? Colors.red : Colors.black),
+            Flexible(
+              flex:4,
+              child: AutoSizeText(
+                player['uniformNumber'],
+                style: const TextStyle(fontSize: 50),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Flexible(
+              flex: 3,
+              child: AutoSizeText(
+                player['playerName'],
+                style: const TextStyle(fontSize: 50),
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: AutoSizeText(
+                '파울:${fouls.length},득점:',
+                style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 20,
+                    color: fouls.length > 4 ? Colors.red : Colors.black),
+              ),
             )
           ],
         ),

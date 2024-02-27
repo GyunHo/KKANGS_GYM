@@ -91,6 +91,7 @@ class _LeagueDetailState extends State<LeagueDetail> {
                                 }
                               });
                             });
+                          if (!context.mounted) return;
                             Navigator.of(context).pop();
                           },
                           child: Container(
