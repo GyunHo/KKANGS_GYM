@@ -141,7 +141,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 .getTeamCrew(teamDoc)
                                 .then((QuerySnapshot queryData) async {
                               Get.to(() => TeamDetail(
-                                  teamDoc: teamDoc, players: queryData.docs));
+                                  teamDoc: teamDoc));
                             });
                           },
                           onLongPress: () {
