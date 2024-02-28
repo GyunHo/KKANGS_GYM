@@ -27,7 +27,7 @@ class _TeamDetailState extends State<TeamDetail> {
       backgroundColor: colorScheme.primary,
       appBar: AppBar(
         title: Text(
-          '${teamDoc['name']} 팀',
+          '${teamDoc['name']}',
           style: textTheme.titleLarge!.copyWith(
               color: colorScheme.onBackground, fontWeight: FontWeight.bold),
         ),
@@ -49,18 +49,28 @@ class _TeamDetailState extends State<TeamDetail> {
                   itemBuilder: (BuildContext ctx, int count) {
                     return Card(
                         child: ListTile(
-                      trailing: authController.isLogin() ?? false
+                      trailing: authController.isLogin()
                           ? IconButton(
                               onPressed: () async {
-                                await teamAndPlayerController
-                                    .deletedPlayer(players[count])
-                                    .then((value) {
-                                  setState(() {
-                                    players.removeAt(count);
-                                  });
-                                });
+                                Get.defaultDialog(
+                                    title: '선수 삭제 경고',
+                                    titleStyle: const TextStyle(color: Colors.red),
+                                    textCancel: '취소',
+                                    content: const Text('누적기록이 전부 삭제됩니다.',style: TextStyle(color: Colors.red)),
+                                    onConfirm: () async {
+                                      Get.back();
+                                      await teamAndPlayerController
+                                          .deletedPlayer(players[count])
+                                          .then((value) {
+                                        setState(() {
+                                          players.removeAt(count);
+                                        });
+                                      });
+                                    },
+                                    textConfirm: "삭제",
+                                    );
                               },
-                              icon: Icon(Icons.delete_forever),
+                              icon: const Icon(Icons.delete_forever),
                             )
                           : null,
                       title: Padding(
