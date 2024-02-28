@@ -50,27 +50,39 @@ class _TeamDetailState extends State<TeamDetail> {
                     return Card(
                         child: ListTile(
                       trailing: authController.isLogin()
-                          ? IconButton(
-                              onPressed: () async {
-                                Get.defaultDialog(
-                                    title: '선수 삭제 경고',
-                                    titleStyle: const TextStyle(color: Colors.red),
-                                    textCancel: '취소',
-                                    content: const Text('누적기록이 전부 삭제됩니다.',style: TextStyle(color: Colors.red)),
-                                    onConfirm: () async {
-                                      Get.back();
-                                      await teamAndPlayerController
-                                          .deletedPlayer(players[count])
-                                          .then((value) {
-                                        setState(() {
-                                          players.removeAt(count);
-                                        });
-                                      });
+                          ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      buildEditPlayer();
                                     },
-                                    textConfirm: "삭제",
+                                    icon: const Icon(Icons.edit)),
+                                IconButton(
+                                  onPressed: () async {
+                                    Get.defaultDialog(
+                                      title: '선수 삭제 경고',
+                                      titleStyle:
+                                          const TextStyle(color: Colors.red),
+                                      textCancel: '취소',
+                                      content: const Text('누적기록이 전부 삭제됩니다.',
+                                          style: TextStyle(color: Colors.red)),
+                                      onConfirm: () async {
+                                        Get.back();
+                                        await teamAndPlayerController
+                                            .deletedPlayer(players[count])
+                                            .then((value) {
+                                          setState(() {
+                                            players.removeAt(count);
+                                          });
+                                        });
+                                      },
+                                      textConfirm: "삭제",
                                     );
-                              },
-                              icon: const Icon(Icons.delete_forever),
+                                  },
+                                  icon: const Icon(Icons.delete_forever),
+                                ),
+                              ],
                             )
                           : null,
                       title: Padding(
@@ -91,6 +103,36 @@ class _TeamDetailState extends State<TeamDetail> {
                   }))
         ],
       ),
+    );
+  }
+
+  Future<dynamic> buildEditPlayer() {
+    TextEditingController name = TextEditingController();
+    TextEditingController number = TextEditingController();
+    return Get.defaultDialog(
+      content: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: name,
+              decoration: const InputDecoration(hintText: "이름"),
+            ),
+            TextField(
+              controller: number,
+              decoration: const InputDecoration(hintText: '번호'),
+            ),
+          ],
+        ),
+      ),
+      title: "선수 수정",
+      backgroundColor: Colors.green.withOpacity(0.6),
+      titleStyle: TextStyle(color: Colors.white),
+      textConfirm: "수정",
+      textCancel: "취소",
+      onConfirm: () {
+        Get.back();
+      },
     );
   }
 }
