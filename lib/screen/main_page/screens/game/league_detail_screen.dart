@@ -17,12 +17,8 @@ class _LeagueDetailState extends State<LeagueDetail> {
   Widget build(BuildContext context) {
     LeagueController leagueController = Get.find<LeagueController>();
 
-    ColorScheme colorScheme = Theme
-        .of(context)
-        .colorScheme;
-    TextTheme textTheme = Theme
-        .of(context)
-        .textTheme;
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    TextTheme textTheme = Theme.of(context).textTheme;
     QueryDocumentSnapshot leagueDoc = leagueController.selectedLeague;
 
     return Scaffold(
@@ -63,24 +59,26 @@ class _LeagueDetailState extends State<LeagueDetail> {
                       itemBuilder: (BuildContext context, int count) {
                         String? id = snapshot.data?.docs[count].id;
                         String homeName =
-                        snapshot.data?.docs[count]['homeTeamName'];
+                            snapshot.data?.docs[count]['homeTeamName'];
                         String awayName =
-                        snapshot.data?.docs[count]['awayTeamName'];
+                            snapshot.data?.docs[count]['awayTeamName'];
                         String homeScore =
-                        snapshot.data?.docs[count]['homeScore'];
+                            snapshot.data?.docs[count]['homeScore'];
                         String awayScore =
-                        snapshot.data?.docs[count]['awayScore'];
+                            snapshot.data?.docs[count]['awayScore'];
                         Timestamp time = snapshot.data?.docs[count]['time'];
                         DateTime date = time.toDate();
 
                         return InkWell(
                           onTap: () async {
-                          showDialog(context: context,
-                                useSafeArea:false ,
-                                builder: (c) =>
-                                    Center(child: CircularProgressIndicator(),));
+                            showDialog(
+                                context: context,
+                                useSafeArea: false,
+                                builder: (c) => Center(
+                                      child: CircularProgressIndicator(),
+                                    ));
                             GameQuery gameQuery =
-                            Get.put(GameQuery(), permanent: true);
+                                Get.put(GameQuery(), permanent: true);
                             await gameQuery
                                 .setGame(snapshot.data!.docs[count])
                                 .whenComplete(() async {
@@ -91,8 +89,7 @@ class _LeagueDetailState extends State<LeagueDetail> {
                                 }
                               });
                             });
-                          if (!context.mounted) return;
-                            Navigator.of(context).pop();
+                            Get.back();
                           },
                           child: Container(
                             margin: EdgeInsets.all(8),
@@ -108,11 +105,10 @@ class _LeagueDetailState extends State<LeagueDetail> {
                                   child: SizedBox(
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "경기날짜 : ${date.year}년 ${date
-                                              .month}월 ${date.day}일",
+                                          "경기날짜 : ${date.year}년 ${date.month}월 ${date.day}일",
                                           style: TextStyle(
                                               color: colorScheme
                                                   .onPrimaryContainer),
@@ -121,13 +117,13 @@ class _LeagueDetailState extends State<LeagueDetail> {
                                           "홈팀 : $homeName",
                                           style: TextStyle(
                                               color:
-                                              Colors.blue.withOpacity(0.7)),
+                                                  Colors.blue.withOpacity(0.7)),
                                         ),
                                         Text(
                                           "어웨이팀 : $awayName",
                                           style: TextStyle(
                                               color:
-                                              Colors.red.withOpacity(0.7)),
+                                                  Colors.red.withOpacity(0.7)),
                                         ),
                                       ],
                                     ),
@@ -138,7 +134,7 @@ class _LeagueDetailState extends State<LeagueDetail> {
                                   child: SizedBox(
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Flexible(
                                           flex: 3,
