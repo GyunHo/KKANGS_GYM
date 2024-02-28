@@ -105,8 +105,7 @@ class TeamAndPlayerController extends GetxController {
   }
 
   Future<QuerySnapshot> getTeamCrew(QueryDocumentSnapshot teamDoc) async {
-    QuerySnapshot crews =
-        await playerInstance.where('teamId', isEqualTo: teamDoc.id).get();
+    QuerySnapshot crews = await teamDoc.reference.collection('crew').get();
 
     return crews;
   }
