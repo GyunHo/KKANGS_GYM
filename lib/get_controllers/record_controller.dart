@@ -121,19 +121,15 @@ class RecordController extends GetxController {
   ///24.02.06 게임-record에서 스냅샷으로 변경
   ///기존 레코드 컬렉션에서 스냅샷찍을경우 데이터가 누적되면 파이어베이스 스트림 읽기 비용 증가 우려
   Stream<QuerySnapshot> recordStream() {
-    //   return recordInstance
-    //       .where('gameId', isEqualTo: gameId)
-    //       .orderBy('time', descending: true)
-    //       .snapshots();
-    return gameDoc.collection('record').orderBy('time',descending: true).snapshots();
+    return gameDoc
+        .collection('record')
+        .orderBy('time', descending: true)
+        .snapshots();
   }
 
   ///점수, 파울 등 기록
   ///24.02.06 게임-record, record컬렉션, player-record에 직접기록으로 변경
   Future<void> recording(Recording recording) async {
-    // await recordInstance
-    //     .add(recording.toJson())
-    //     .then((value) => print('기록 완료'));
     Map<String, dynamic> data = recording.toJson();
     WriteBatch writeBatch = FirebaseFirestore.instance.batch();
     DocumentReference toGameDocRecord = gameDoc.collection('record').doc();
@@ -156,9 +152,6 @@ class RecordController extends GetxController {
   ///게임id로 모든 레코드 검색
   /// ///24.02.06 게임-record에서 스냅샷으로 변경
   Future<List<QueryDocumentSnapshot>> getGameRecord() async {
-    // QuerySnapshot querySnapshot =
-    //     await recordInstance.where('gameId', isEqualTo: gameId).get();
-
     QuerySnapshot querySnapshot = await gameDoc.collection('record').get();
 
     return querySnapshot.docs;
@@ -271,6 +264,7 @@ class RecordController extends GetxController {
     }
   }
 
+  /// 게임기록중 게임 문서에  추가 선수 기록
   void playingGameAddPlayer(QueryDocumentSnapshot player, String witchTeam) {
     Map<String, dynamic> playerData = player.data() as Map<String, dynamic>;
     if (witchTeam == 'home') {
@@ -280,5 +274,39 @@ class RecordController extends GetxController {
       awayTeamPlayer.add(player);
       gameDoc.collection('awayTeam').doc(player.reference.id).set(playerData);
     }
+  }
+
+  ///선수 타입별 전체기록 분류 - 선수가 경기중 현재 몇점 기록했는지 보고 싶데서...sumPoint에서 사용
+  Map<String, Map<String, int>> splitRecord(
+      List<QueryDocumentSnapshot> records) {
+    Map<String, Map<String, int>> data = {};
+    for (QueryDocumentSnapshot record in records) {
+      Recording rec = Recording.fromQueryDocumentSnapshot(record);
+      data.update(rec.playerId, (value) {
+        Map<String, int> res = value;
+        res.update(rec.recordType, (point) => point + 1, ifAbsent: () => 1);
+        return res;
+      }, ifAbsent: () => {rec.recordType: 1});
+    }
+    return data;
+  }
+
+  ///선수 기록에서 점수 합계
+  int sumPoint(Map<String, int> data) {
+    int point = 0;
+    data.forEach((key, value) {
+      switch (key) {
+        case "1점":
+          point += value * 1;
+          break;
+        case "2점":
+          point += value * 2;
+          break;
+        case "3점":
+          point += value * 3;
+          break;
+      }
+    });
+    return point;
   }
 }

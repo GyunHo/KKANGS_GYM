@@ -98,6 +98,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                 String awayPoint = recordController!.calcPoint(awayRecord);
                 recordController!.homeScore = homePoint;
                 recordController!.awayScore = awayPoint;
+
                 return Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(
@@ -105,7 +106,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                       Flexible(
                         flex: 6,
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors.red.withOpacity(0.6),
                             borderRadius: BorderRadius.circular(8),
@@ -114,7 +115,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                             children: [
                               Text(
                                 'HOME : ${recordController?.homeTeamDoc['name']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16, color: Colors.white70),
                               ),
                               Flexible(
@@ -122,7 +123,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                   itemCount:
                                       recordController!.homeTeamPlayer.length +
                                           1,
-                                  physics: BouncingScrollPhysics(),
+                                  physics: const BouncingScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: crossCount),
@@ -175,7 +176,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                       Flexible(
                         flex: 5,
                         child: Container(
-                          padding: EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(8),
@@ -189,10 +190,10 @@ class _RecorderScreenState extends State<RecorderScreen> {
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     Container(
-                                      child: Text('HOME'),
                                       decoration:
-                                          BoxDecoration(color: Colors.red),
+                                          const BoxDecoration(color: Colors.red),
                                       alignment: Alignment.center,
+                                      child: const Text('HOME'),
                                     ),
                                     Flexible(
                                       flex: 3,
@@ -229,100 +230,98 @@ class _RecorderScreenState extends State<RecorderScreen> {
                               Flexible(
                                 fit: FlexFit.tight,
                                 flex: 4,
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Flexible(
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [1, 2, 3, 4, 5].map((q) {
-                                              String quarter =
-                                                  q == 5 ? "EX" : '${q}Q';
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Flexible(
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [1, 2, 3, 4, 5].map((q) {
+                                            String quarter =
+                                                q == 5 ? "EX" : '${q}Q';
 
-                                              return Flexible(
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    recordController!.quarter =
-                                                        q;
-                                                    setState(() {});
-                                                  },
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.redAccent),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      color: recordController!
-                                                                  .quarter ==
-                                                              q
-                                                          ? Colors.white
-                                                          : Colors.white12,
-                                                    ),
-                                                    padding: EdgeInsets.all(4),
-                                                    margin: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 8.0),
-                                                    child: Text(
-                                                      quarter,
-                                                      style: TextStyle(
-                                                          color: recordController!
-                                                                      .quarter ==
-                                                                  q
-                                                              ? Colors.black
-                                                              : Colors.white54),
-                                                    ),
+                                            return Flexible(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  recordController!.quarter =
+                                                      q;
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color:
+                                                            Colors.redAccent),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: recordController!
+                                                                .quarter ==
+                                                            q
+                                                        ? Colors.white
+                                                        : Colors.white12,
+                                                  ),
+                                                  padding: EdgeInsets.all(4),
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 8.0),
+                                                  child: Text(
+                                                    quarter,
+                                                    style: TextStyle(
+                                                        color: recordController!
+                                                                    .quarter ==
+                                                                q
+                                                            ? Colors.black
+                                                            : Colors.white54),
                                                   ),
                                                 ),
-                                              );
-                                            }).toList()),
-                                      ),
-                                      Flexible(
-                                          child: Text(
-                                        '$homePoint : $awayPoint',
-                                        style: const TextStyle(
-                                          fontSize: 36,
-                                          color: Colors.white,
-                                        ),
-                                      )),
-                                      Flexible(
-                                          child: Column(
-                                        children: [
-                                          Text(
-                                            '${recordController?.quarterToString()} 팀 파울',
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.redAccent),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              ///홈팀파울
-                                              Text(
-                                                '${homeFoul[recordController?.quarterToString()] ?? 0}',
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
                                               ),
+                                            );
+                                          }).toList()),
+                                    ),
+                                    Flexible(
+                                        child: Text(
+                                      '$homePoint : $awayPoint',
+                                      style: const TextStyle(
+                                        fontSize: 36,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                    Flexible(
+                                        child: Column(
+                                      children: [
+                                        Text(
+                                          '${recordController?.quarterToString()} 팀 파울',
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.redAccent),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            ///홈팀파울
+                                            Text(
+                                              '${homeFoul[recordController?.quarterToString()] ?? 0}',
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white),
+                                            ),
 
-                                              ///어웨이팀 파울
-                                              Text(
-                                                '${awayFoul[recordController?.quarterToString()] ?? 0}',
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      )),
-                                    ],
-                                  ),
+                                            ///어웨이팀 파울
+                                            Text(
+                                              '${awayFoul[recordController?.quarterToString()] ?? 0}',
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                  ],
                                 ),
                               ),
                               Flexible(
@@ -631,6 +630,8 @@ class _RecorderScreenState extends State<RecorderScreen> {
       Recording recording,
       QueryDocumentSnapshot player,
       List<QueryDocumentSnapshot> recordList) {
+    Map<String, Map<String, int>> playerRecord = recordController!.splitRecord(recordList);
+    int point = playerRecord.containsKey(player.id)?recordController!.sumPoint(playerRecord[player.id]!):0;
     List fouls = recordList.where((rec) {
       if (rec['playerID'] == player.id && rec['recordType'] == '파울') {
         return true;
@@ -717,7 +718,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
             Flexible(
               flex: 2,
               child: AutoSizeText(
-                '파울:${fouls.length}, 10점:',
+                '파울:${fouls.length}, $point점:',
                 style: TextStyle(
                     overflow: TextOverflow.ellipsis,
                     fontSize: 20,
