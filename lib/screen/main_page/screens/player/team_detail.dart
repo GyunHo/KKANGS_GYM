@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ggangs_gym/get_controllers/auth_controller.dart';
 import 'package:ggangs_gym/get_controllers/team_player_controller.dart';
+import 'package:ggangs_gym/models/player_model.dart';
 
 class TeamDetail extends StatefulWidget {
   final QueryDocumentSnapshot teamDoc;
@@ -63,8 +64,14 @@ class _TeamDetailState extends State<TeamDetail> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         IconButton(
-                                            onPressed: () {
-                                              buildEditPlayer(players[count]);
+                                            onPressed: () async {
+                                              await buildEditPlayer(
+                                                      players[count])
+                                                  .then((result) {
+                                                if (result ?? false) {
+                                                  setState(() {});
+                                                }
+                                              });
                                             },
                                             icon: const Icon(Icons.edit)),
                                         IconButton(
@@ -121,20 +128,23 @@ class _TeamDetailState extends State<TeamDetail> {
     );
   }
 
-  Future<dynamic> buildEditPlayer(QueryDocumentSnapshot playerSnapshot) {
-
-    TextEditingController name = TextEditingController();
-    TextEditingController number = TextEditingController();
+  Future<bool?> buildEditPlayer(QueryDocumentSnapshot playerSnapshot) {
+    Player player = Player.fromQueryDocumentSnapshot(playerSnapshot);
+    TextEditingController name = TextEditingController(text: player.playerName);
+    TextEditingController number =
+        TextEditingController(text: player.uniformNumber);
     return Get.defaultDialog(
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             TextField(
+              style: const TextStyle(color: Colors.white),
               controller: name,
               decoration: const InputDecoration(hintText: "이름"),
             ),
             TextField(
+              style: const TextStyle(color: Colors.white),
               controller: number,
               decoration: const InputDecoration(hintText: '번호'),
             ),
@@ -143,11 +153,17 @@ class _TeamDetailState extends State<TeamDetail> {
       ),
       title: "선수 수정",
       backgroundColor: Colors.green.withOpacity(0.6),
-      titleStyle: TextStyle(color: Colors.white),
+      titleStyle: const TextStyle(color: Colors.white),
       textConfirm: "수정",
       textCancel: "취소",
-      onConfirm: () {
-        Get.back(result: true);
+      onConfirm: () async {
+        player.playerName = name.text.toString().trim();
+        player.uniformNumber = number.text.toString().trim();
+       if(player.uniformNumber.isNotEmpty&&player.playerName!.isNotEmpty){
+         await playerSnapshot.reference
+             .update(player.toJson())
+             .then((value) => Get.back(result: true));
+       }
       },
     );
   }
